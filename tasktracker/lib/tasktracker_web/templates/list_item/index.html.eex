@@ -1,0 +1,28 @@
+<h1>Listing List items</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Task</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for list_item <- @list_items do %>
+    <tr>
+      <td><%= Tasktracker.Users.get_user!(list_item.user_id).email %></td>
+      <td><%= Tasktracker.Tasks.get_task!(list_item.task_id).title %></td>
+
+      <td>
+        <%= link "Show", to: Routes.list_item_path(@conn, :show, list_item) %>
+        <%= link "Edit", to: Routes.list_item_path(@conn, :edit, list_item) %>
+        <%= link "Delete", to: Routes.list_item_path(@conn, :delete, list_item), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New List item", to: Routes.list_item_path(@conn, :new), class: "btn btn-primary" %></span>

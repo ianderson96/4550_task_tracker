@@ -1,0 +1,23 @@
+<h1>Assign Task to User</h1>
+
+<%= if @current_user do %>
+  <div>
+    <%= form_for @item_cset, Routes.list_item_path(@conn, :create),
+               [class: "form-inline"], fn f -> %>
+
+    <p>Choose user:</p>
+      <div class="form-group">
+        <%= select f, :user_id, Tasktracker.Users.list_users_for_select(), class: "form-control mx-3" %>
+        <%= error_tag f, :user_id %>
+      </div>
+      
+      <%= hidden_input f, :task_id %>
+
+      <div>
+        <%= submit "Assign to User", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<span><%= link "Back", to: Routes.task_path(@conn, :index) %></span>

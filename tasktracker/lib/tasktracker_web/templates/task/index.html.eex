@@ -1,0 +1,31 @@
+<div class="container">
+<div class="row">
+<h1>Tasks</h1>
+<span class="mx-4">
+  <%= link "Add Task", to: Routes.task_path(@conn, :new), class: "btn btn-primary" %>
+</span>
+</div>
+<div class="row">
+<%= for task <- @tasks do %>
+  <div class="card col-4 px-4 py-4 mx-4 my-3" style="border: solid 1px black; background:#eee">
+  <h2> <%= task.title %></h2>
+    <p> <%= task.desc %> </p>
+    <p> <%= task.minutes %> minutes worked on this task</p>
+    <p> Assigned to: <%= Tasktracker.TaskLists.get_list_item_by_task(task.id)  || "--" %> </p>
+    <%= link "Assign to User", to: Routes.task_path(@conn, :show, task),
+            class: "btn btn-secondary my-1" %>
+    <%= link "Edit", to: Routes.task_path(@conn, :edit, task),
+            class: "btn btn-info my-1" %>
+    <%= link "Delete", to: Routes.task_path(@conn, :delete, task),
+            method: :delete, data: [confirm: "Are you sure?"],
+            class: "btn btn-danger my-1" %>
+             <br>
+    <%= if task.completed do %>
+    <strong>Task Complete</strong>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+</div>
+
+

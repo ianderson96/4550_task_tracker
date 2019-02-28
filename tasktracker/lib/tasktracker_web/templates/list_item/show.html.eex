@@ -1,0 +1,14 @@
+<h1>Show List item</h1>
+
+<ul>
+
+  <li>
+    <strong>User: <%= Tasktracker.Users.get_user!(@list_item.user_id).email %></strong>
+    <strong>Task: <%= Tasktracker.Tasks.get_task!(@list_item.task_id).title %></strong>
+    
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.list_item_path(@conn, :edit, @list_item) %></span>
+<span><%= link "Back", to: Routes.list_item_path(@conn, :index) %></span>
