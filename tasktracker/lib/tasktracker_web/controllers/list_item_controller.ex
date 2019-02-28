@@ -18,8 +18,8 @@ defmodule TasktrackerWeb.ListItemController do
     case TaskLists.create_list_item(list_item_params) do
       {:ok, list_item} ->
         conn
-        |> put_flash(:info, "List item created successfully.")
-        |> redirect(to: Routes.list_item_path(conn, :show, list_item))
+        |> put_flash(:info, "Task assigned to user.")
+        |> redirect(to: Routes.task_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
