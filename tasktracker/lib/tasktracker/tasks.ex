@@ -101,4 +101,23 @@ defmodule Tasktracker.Tasks do
   def change_task(%Task{} = task) do
     Task.changeset(task, %{})
   end
+
+  ## Gets a list of all the possible minute numbers users can enter.
+  def get_possible_minutes() do
+    get_possible_minutes(0, [0])
+  end
+
+  def get_possible_minutes(acc, list) do
+    if acc < 2400 do
+      get_possible_minutes(acc + 15, list ++ [{convert_to_hours_minutes(acc + 15), acc + 15}])
+    else
+      list
+    end
+  end
+
+  def convert_to_hours_minutes(num) do
+    hours = Kernel.trunc(Float.floor(num / 60))
+    minutes = num - hours * 60
+    Integer.to_string(hours) <> " hours, " <> Integer.to_string(minutes) <> " minutes"
+  end
 end
