@@ -1,0 +1,8 @@
+<h1>Show Underling</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.underling_path(@conn, :edit, @underling) %></span>
+<span><%= link "Back", to: Routes.underling_path(@conn, :index) %></span>

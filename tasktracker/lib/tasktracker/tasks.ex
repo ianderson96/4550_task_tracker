@@ -35,7 +35,13 @@ defmodule Tasktracker.Tasks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task!(id) do
+    Repo.one!(
+      from t in Task,
+        where: t.id == ^id,
+        preload: [:timeblocks]
+    )
+  end
 
   @doc """
   Creates a task.
@@ -100,19 +106,6 @@ defmodule Tasktracker.Tasks do
   """
   def change_task(%Task{} = task) do
     Task.changeset(task, %{})
-  end
-
-  ## Gets a list of all the possible minute numbers users can enter.
-  def get_possible_minutes() do
-    get_possible_minutes(0, [0])
-  end
-
-  def get_possible_minutes(acc, list) do
-    if acc < 2400 do
-      get_possible_minutes(acc + 15, list ++ [{convert_to_hours_minutes(acc + 15), acc + 15}])
-    else
-      list
-    end
   end
 
   def convert_to_hours_minutes(num) do

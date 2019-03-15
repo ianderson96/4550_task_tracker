@@ -1,0 +1,28 @@
+<h1>Listing Underlings</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Manager</th>
+      <th>Underling</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for underling <- @underlings do %>
+    <tr>
+      <td><%= Tasktracker.Users.get_user!(underling.manager_id).email %></td>
+      <td><%= Tasktracker.Users.get_user!(underling.underling_id).email %></td>
+
+      <td>
+        <%= link "Show", to: Routes.underling_path(@conn, :show, underling) %>
+        <%= link "Edit", to: Routes.underling_path(@conn, :edit, underling) %>
+        <%= link "Delete", to: Routes.underling_path(@conn, :delete, underling), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Underling", to: Routes.underling_path(@conn, :new) %></span>

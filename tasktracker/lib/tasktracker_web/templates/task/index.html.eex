@@ -1,16 +1,43 @@
 <div class="container">
+
+<%= if @current_user && !@current_user.manager? do %>
 <div class="row">
-<h1>Tasks</h1>
+<h1>My Tasks</h1>
+</div>
+<div class="row">
+<%= for task <- Tasktracker.TaskLists.list_tasks_for_user(@current_user.id) do %>
+  <div class="card col-4 px-4 py-4 mx-4 my-3" style="border: solid 1px black; background:#eee">
+  <h2> <%= task.title %></h2>
+    <p> <%= task.desc %> </p>
+    <p> <%= Tasktracker.Tasks.convert_to_hours_minutes(Tasktracker.Timeblocks.sum_timeblocks(task.id)) %> worked on this task</p>
+    <p> Assigned to: <%= Tasktracker.TaskLists.get_list_item_by_task(task.id)  || "--" %> </p>
+    <%= link "Edit", to: Routes.task_path(@conn, :edit, task),
+            class: "btn btn-info my-1" %>
+    <%= link "Delete", to: Routes.task_path(@conn, :delete, task),
+            method: :delete, data: [confirm: "Are you sure?"],
+            class: "btn btn-danger my-1" %>
+             <br>
+    <%= if task.completed do %>
+    <strong>Task Complete</strong>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+<% end %>
+
+<%= if @current_user && @current_user.manager? do %>
+<div class="row">
+<h1>My Task Report</h1>
 <span class="mx-4">
   <%= link "Add Task", to: Routes.task_path(@conn, :new), class: "btn btn-primary" %>
 </span>
 </div>
 <div class="row">
-<%= for task <- @tasks do %>
+<%= for task <- Tasktracker.TaskLists.list_tasks_for_manager(@current_user.id) do %>
   <div class="card col-4 px-4 py-4 mx-4 my-3" style="border: solid 1px black; background:#eee">
   <h2> <%= task.title %></h2>
     <p> <%= task.desc %> </p>
-    <p> <%= task.minutes %> minutes worked on this task</p>
+    <p> <%= Tasktracker.Tasks.convert_to_hours_minutes(Tasktracker.Timeblocks.sum_timeblocks(task.id)) %> worked on this task</p>
     <p> Assigned to: <%= Tasktracker.TaskLists.get_list_item_by_task(task.id)  || "--" %> </p>
     <%= link "Assign to User", to: Routes.task_path(@conn, :show, task),
             class: "btn btn-secondary my-1" %>
@@ -26,6 +53,34 @@
   </div>
   <% end %>
 </div>
+<% end %>
+
+<%= if @current_user && @current_user.manager? do %>
+<div class="row">
+<h1>All Tasks</h1>
+</div>
+<div class="row">
+<%= for task <- @tasks do %>
+  <div class="card col-4 px-4 py-4 mx-4 my-3" style="border: solid 1px black; background:#eee">
+  <h2> <%= task.title %></h2>
+    <p> <%= task.desc %> </p>
+    <p> <%= Tasktracker.Tasks.convert_to_hours_minutes(Tasktracker.Timeblocks.sum_timeblocks(task.id)) %> worked on this task</p>
+    <p> Assigned to: <%= Tasktracker.TaskLists.get_list_item_by_task(task.id)  || "--" %> </p>
+    <%= link "Assign to User", to: Routes.task_path(@conn, :show, task),
+            class: "btn btn-secondary my-1" %>
+    <%= link "Edit", to: Routes.task_path(@conn, :edit, task),
+            class: "btn btn-info my-1" %>
+    <%= link "Delete", to: Routes.task_path(@conn, :delete, task),
+            method: :delete, data: [confirm: "Are you sure?"],
+            class: "btn btn-danger my-1" %>
+             <br>
+    <%= if task.completed do %>
+    <strong>Task Complete</strong>
+    <% end %>
+  </div>
+  <% end %>
+</div>
+<% end %>
 </div>
 
 

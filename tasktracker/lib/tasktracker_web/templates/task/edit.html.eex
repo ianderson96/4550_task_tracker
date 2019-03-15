@@ -3,3 +3,12 @@
 <%= render "form.html", Map.put(assigns, :action, Routes.task_path(@conn, :update, @task)) %>
 <br>
 <span><%= link "Back", to: Routes.task_path(@conn, :index), class: "back" %></span>
+
+<script type="text/javascript">
+ window.timeblock_path = "<%= Routes.timeblock_path(@conn, :create) %>";
+ window.timeblock_delete_path = function(id) {
+    
+      return "/ajax/timeblocks/" + id;
+ }
+</script>
+

@@ -4,7 +4,9 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>Description</th>
+      <th>Admin?</th>
+      <th>Manager?</th>
+      <th>Underlings</th>
       <th></th>
     </tr>
   </thead>
@@ -13,6 +15,14 @@
     <tr>
       <td><%= user.email %></td>
       <td><%= user.admin %></td>
+      <td><%= user.manager? %></td>
+      <td>
+      <ul>
+      <%= for underling <- Tasktracker.Underlings.list_underlings_for_user(user.id) do %>
+      <li> <%= Tasktracker.Users.get_user!(underling.underling_id).email %> </li>
+      <% end %>
+      </ul>
+      </td>
 
       <td>
         <%= link "Show", to: Routes.user_path(@conn, :show, user),

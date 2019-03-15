@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "deploy": "webpack --mode production",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --watch-sdtin --progress --color"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

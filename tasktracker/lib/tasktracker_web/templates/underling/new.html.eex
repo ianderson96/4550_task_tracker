@@ -1,0 +1,5 @@
+<h1>New Underling</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.underling_path(@conn, :create)) %>
+
+<span><%= link "Back", to: Routes.underling_path(@conn, :index) %></span>

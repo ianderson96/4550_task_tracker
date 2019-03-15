@@ -7,6 +7,7 @@ defmodule Tasktracker.Tasks.Task do
     field :title, :string, null: false
     field :minutes, :integer
     field :completed, :boolean, null: false
+    has_many :timeblocks, Tasktracker.Timeblocks.Timeblock
 
     timestamps()
   end

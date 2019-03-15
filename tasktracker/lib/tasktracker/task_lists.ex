@@ -47,6 +47,7 @@ defmodule Tasktracker.TaskLists do
     end
   end
 
+  ## Gets the ID of the user assigned to a specific task
   def get_list_item_id_by_task(id) do
     user = Repo.get_by(ListItem, task_id: id)
 
@@ -55,6 +56,24 @@ defmodule Tasktracker.TaskLists do
     else
       nil
     end
+  end
+
+  ## gets a list of all the tasks assigned to a specific user
+  def list_tasks_for_user(id) do
+    Repo.all(ListItem)
+    |> Enum.filter(fn x -> x.user_id == id end)
+    |> Enum.map(fn x -> Tasktracker.Tasks.get_task!(x.task_id) end)
+  end
+
+  ## gets a list of all the tasks assigned to a manager's underlings
+  def list_tasks_for_manager(id) do
+    underlings =
+      Tasktracker.Underlings.list_underlings_for_user(id)
+      |> Enum.map(fn x -> x.underling_id end)
+
+    Repo.all(ListItem)
+    |> Enum.filter(fn x -> Enum.member?(underlings, x.user_id) end)
+    |> Enum.map(fn x -> Tasktracker.Tasks.get_task!(x.task_id) end)
   end
 
   @doc """

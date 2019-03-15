@@ -7,7 +7,7 @@
 
     <p>Choose user:</p>
       <div class="form-group">
-        <%= select f, :user_id, Tasktracker.Users.list_users_for_select(), class: "form-control mx-3" %>
+        <%= select f, :user_id, Tasktracker.Underlings.list_underlings_for_select(@current_user.id), class: "form-control mx-3" %>
         <%= error_tag f, :user_id %>
       </div>
       

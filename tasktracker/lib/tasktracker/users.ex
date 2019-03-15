@@ -24,6 +24,7 @@ defmodule Tasktracker.Users do
   def list_users_for_select do
     Repo.all(User)
     |> IO.inspect()
+    |> Enum.filter(fn user -> user.manager? == false end)
     |> Enum.map(fn user ->
       email = user.email
       id = user.id

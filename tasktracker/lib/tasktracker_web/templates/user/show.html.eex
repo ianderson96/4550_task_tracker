@@ -1,18 +1,35 @@
-<h1>Show User</h1>
+<h1>User: <%= @user.email %></h1>
+<%= if @user.manager? do %>
+<h2> This user manages the following users: </h2>
+  <ul>
+    <%= for underling <- Tasktracker.Underlings.list_underlings_for_user(@user.id) do %>
+      <li> <%= Tasktracker.Users.get_user!(underling.underling_id).email %> </li>
+    <% end %>
+  </ul>
+<% else %>
+<h2> This user's manager is: <%= Tasktracker.Underlings.get_manager(@user.id)%></h2>
+<% end %>
 
-<ul>
+<%= if @current_user && @current_user.admin do %>
+  <div>
+    <%= form_for @u_cset, Routes.underling_path(@conn, :create),
+               [class: "form-inline"], fn f -> %>
 
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
+    <p>Add underlings to this user:</p>
+      <div class="form-group">
+        <%= select f, :underling_id, Tasktracker.Users.list_users_for_select(), class: "form-control mx-3" %>
+        <%= error_tag f, :underling_id %>
+      </div>
+      
+      <%= hidden_input f, :manager_id %>
 
-  <li>
-    <strong>Admin:</strong>
-    <%= @user.admin %>
-  </li>
+      <div>
+        <%= submit "Assign to User", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
-</ul>
 
 <span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>
 <span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>

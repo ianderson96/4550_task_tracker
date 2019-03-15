@@ -15,18 +15,24 @@
         </div>
         <div class="col-4">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/tasks">Tasks</a>
             </li>
+            <%= if @current_user && @current_user.admin do %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Users</a>
+            </li>
+            <% end %>
           </ul>
         </div>
         <div class="col-4">
       <%= if @current_user do %>
         <p class="my-3">
-          User: <%= @current_user.email %> |
+          User: <%= link @current_user.email, to: Routes.user_path(@conn, :show, @current_user),
+            class: "my-1" %> |
           <%= link("Logout", to: Routes.session_path(@conn, :delete),
             method: :delete) %>
         </p>
